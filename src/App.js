@@ -29,7 +29,7 @@ export default class App extends Component {
         this.setState({
           // ... - operator rozproszenia, wyodrebnienie elem. tablicy
           todoItems: [...this.state.todoItems, { action: task, done: false }]
-        });
+        }, () => localStorage.setItem("todos", JSON.stringify(this.state)));
       }
   }
 
@@ -43,6 +43,20 @@ export default class App extends Component {
     .map(item =>
       <TodoRow key={item.action} item={item} callback={this.toggleTodo} />
     );
+
+  componentDidMount = () => {
+      let data = localStorage.getItem("todos");
+      this.setState(data != null ? JSON.parse(data) : 
+      { 
+        userName: "Michal", 
+        todoItems: [{ action: "Kupić kwiaty", done: false },
+                    { action: "Wziać buty", done: false },
+                    { action: "Zebrać bilety", done: true },
+                    { action: "Zadzwonić do Jurka", done: false }],
+        showCompleted: true
+    });
+  }
+
 
   render = () =>
     <div>
